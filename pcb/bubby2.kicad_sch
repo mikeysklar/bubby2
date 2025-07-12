@@ -1520,26 +1520,6 @@
 	)
 	(wire
 		(pts
-			(xy 248.92 106.68) (xy 255.27 106.68)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "2336b0cb-25dc-4a52-883d-72aed9d20cab")
-	)
-	(wire
-		(pts
-			(xy 248.92 101.6) (xy 241.3 101.6)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "3b484598-1e38-4a57-8499-3719530df4ed")
-	)
-	(wire
-		(pts
 			(xy 213.36 64.77) (xy 210.82 64.77)
 		)
 		(stroke
@@ -1600,6 +1580,16 @@
 	)
 	(wire
 		(pts
+			(xy 241.3 106.68) (xy 255.27 106.68)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "643ac1e0-37f4-43f1-a259-02d03ead3acc")
+	)
+	(wire
+		(pts
 			(xy 223.52 64.77) (xy 226.06 64.77)
 		)
 		(stroke
@@ -1627,6 +1617,16 @@
 			(type default)
 		)
 		(uuid "7a69696a-4bed-46f8-9382-10174106c54d")
+	)
+	(wire
+		(pts
+			(xy 246.38 119.38) (xy 246.38 118.11)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "7ae5f620-0638-475f-ad12-9fbdab491760")
 	)
 	(wire
 		(pts
@@ -1670,13 +1670,13 @@
 	)
 	(wire
 		(pts
-			(xy 248.92 93.98) (xy 248.92 99.06)
+			(xy 241.3 91.44) (xy 248.92 91.44)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "9229547a-f2ae-4c04-b10f-f1ee70ee79c9")
+		(uuid "95fa55df-3d7d-4a56-b7a1-f7cf8b3fe2ac")
 	)
 	(wire
 		(pts
@@ -1690,33 +1690,13 @@
 	)
 	(wire
 		(pts
-			(xy 241.3 99.06) (xy 248.92 99.06)
+			(xy 241.3 119.38) (xy 246.38 119.38)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "ad4f0154-7a47-402f-8431-96b7552c2e4f")
-	)
-	(wire
-		(pts
-			(xy 248.92 106.68) (xy 248.92 101.6)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "c2c4a737-9f08-4d0c-a28d-d276625edf2f")
-	)
-	(wire
-		(pts
-			(xy 241.3 114.3) (xy 246.38 114.3)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "d0038494-4088-4c02-bea9-235ea44ce689")
+		(uuid "b9b8f28e-7a92-40f8-bdc6-8d35b261cbef")
 	)
 	(wire
 		(pts
@@ -1727,6 +1707,16 @@
 			(type default)
 		)
 		(uuid "ded936ea-4ccf-4e02-8066-60893d5fc5f6")
+	)
+	(wire
+		(pts
+			(xy 248.92 91.44) (xy 248.92 93.98)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "e613a04a-c187-4b8f-b1b5-7e2eda2b6e94")
 	)
 	(wire
 		(pts
@@ -1747,16 +1737,6 @@
 			(type default)
 		)
 		(uuid "e9aed679-bda9-43ef-b96f-995297041bbf")
-	)
-	(wire
-		(pts
-			(xy 246.38 114.3) (xy 246.38 118.11)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "ee672a84-484f-4d42-adfd-6fe089f5e69b")
 	)
 	(wire
 		(pts
@@ -1929,7 +1909,7 @@
 				(hide yes)
 			)
 		)
-		(property "Footprint" "footprints:sw_spdt_slide_mskt-12c03"
+		(property "Footprint" "sw_spdt_slide_mskt-12c03:Untitled"
 			(at 260.35 133.35 0)
 			(effects
 				(font
