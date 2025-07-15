@@ -274,7 +274,7 @@ def check_chords():
                         else:
                             # 2b) determine the character
                             if Keycode.A <= kc <= Keycode.Z:
-                                char = chr(kc - Keycode.A + ord('A'))
+                                char = chr(kc - Keycode.A + ord('a'))
                             elif Keycode.ONE <= kc <= Keycode.NINE:
                                 char = chr(kc - Keycode.ONE + ord('1'))
                             elif kc == Keycode.ZERO:
