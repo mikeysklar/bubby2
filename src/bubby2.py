@@ -1,11 +1,15 @@
 import board
+import displayio
+import terminalio
 import digitalio
 import time
 import usb_hid
+from adafruit_display_text import label
 from adafruit_hid.keyboard import Keyboard
 from adafruit_hid.mouse import Mouse
 from adafruit_hid.consumer_control import ConsumerControl
 from adafruit_hid.consumer_control_code import ConsumerControlCode
+from adafruit_hid.keycode import Keycode
 import chords_config
 
 # ─── Hardware setup ────────────────────────────────────────────────────
@@ -27,6 +31,21 @@ for gp in SW_PINS:
 keyboard = Keyboard(usb_hid.devices)
 mouse    = Mouse(usb_hid.devices)
 cc       = ConsumerControl(usb_hid.devices)
+
+# ────LED Screen────────────────────────────────────────────────────────────────
+# 1) Initialize the built-in DISPLAY
+display = board.DISPLAY
+display_group = displayio.Group(scale=2, x=0, y=10)
+display.root_group = display_group
+
+# 2) Create an empty Label and buffer
+text_buffer = ""                                          # holds all chars typed
+text_label = label.Label(
+    terminalio.FONT,
+    text=text_buffer,
+    color=0xFF00FF                                       # magenta
+)
+display_group.append(text_label)
 
 # ─── Timing constants ────────────────────────────────────────────────
 STABLE_MS_ALPHA = 0.03   # 30 ms for layer-1 (alpha)
@@ -77,7 +96,7 @@ def check_chords():
     global last_combo, pending_combo, sent_release, skip_scag, scag_skip_combo
     global modifier_armed, held_modifier, last_time, last_repeat, accel_active
     global held_nav_combo, last_nav, held_combo, last_pending_combo
-    global held_scroll_combo, last_scroll
+    global held_scroll_combo, last_scroll, text_buffer, text_label
 
     now     = time.monotonic()
     pressed = tuple(not p.value for p in pins)
@@ -222,30 +241,65 @@ def check_chords():
 
     # ─── First-release send for layers 1–3,6-7 ───────────────────────
     if len(combo) < len(last_combo) and last_combo and not sent_release:
-        # skip SCAG if it’s the skip combo
         if skip_scag and last_combo == scag_skip_combo:
             skip_scag = False
         else:
             skip_layer_lock = True
             use = pending_combo or last_combo
+
             # SCAG send (layer-4)
             if layer == 4 and modifier_armed and last_combo in chords_config.alpha:
                 key = chords_config.alpha[last_combo]
                 keyboard.press(held_modifier, key)
                 keyboard.release_all()
-                layer       = 1
-                thumb_taps  = 1
-                modifier_armed = False
-                skip_scag      = False
-            # normal layers
+                layer           = 1
+                thumb_taps      = 1
+                modifier_armed  = False
+                skip_scag       = False
+
+            # normal layers 1,2,3,6,7
             elif layer in (1, 2, 3, 6, 7):
-                if use != (4,):  # ignore pure thumb
+                if use != (4,):   # ignore pure thumb
                     kc = lm.get(use)
                     if kc:
+                        # 1) send via USB HID
                         keyboard.press(kc)
                         keyboard.release_all()
+
+                        # 2a) handle Backspace
+                        if kc == Keycode.BACKSPACE:
+                            # remove last character (or linebreak) from our buffer
+                            text_buffer = text_buffer[:-1]
+                            text_label.text = text_buffer
+                        else:
+                            # 2b) determine the character
+                            if Keycode.A <= kc <= Keycode.Z:
+                                char = chr(kc - Keycode.A + ord('A'))
+                            elif Keycode.ONE <= kc <= Keycode.NINE:
+                                char = chr(kc - Keycode.ONE + ord('1'))
+                            elif kc == Keycode.ZERO:
+                                char = "0"
+                            elif kc == Keycode.SPACE:
+                                char = " "
+                            else:
+                                char = "?"  # fallback for other keys
+
+                            # 3) wrap-and-append ONLY when kc is valid
+                            MAX_CHARS = display.width // (6 * display_group.scale)
+                            lines = text_buffer.split("\n")
+                            if len(lines[-1]) >= MAX_CHARS:
+                                # start a new line before appending
+                                text_buffer += "\n" + char
+                            else:
+                                # same line
+                                text_buffer += char
+
+                            # 4) update the on‐screen label
+                            text_label.text = text_buffer
+
                     else:
                         print(f"Unknown L{layer}: {use!r}")
+
         sent_release = True
         time.sleep(DEBOUNCE_UP)
 
